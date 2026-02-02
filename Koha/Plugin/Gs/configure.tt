@@ -1,0 +1,60 @@
+[% USE Dumper %]
+[% USE KohaDates %]
+[% INCLUDE 'doc-head-open.inc' %]
+ <title>Koha: GS plugin: Configuration</title>
+[% INCLUDE 'doc-head-close.inc' %]
+</head>
+<body>
+[% INCLUDE 'header.inc' %]
+[% INCLUDE 'cat-search.inc' %]
+
+<div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Home</a> &rsaquo; <a href="/cgi-bin/koha/plugins/plugins-home.pl">Plugins</a> &rsaquo; GS &rsaquo; Configuration</div>
+
+<div id="container-main" class="container-fluid">
+    <form method="get">
+      <input type="hidden" name="class" value="[% CLASS %]"/>
+      <input type="hidden" name="method" value="[% METHOD %]"/>
+      <input type="hidden" name="save" value="1" />
+
+      <div class="form-group">
+        <label for="location_id">GupShup Api Key</label>
+        <input type="text" name="api_key" class="form-control" value="[% api_key %]">
+        <small class="form-text text-muted">API Key of Endpoint</small>
+      </div>
+
+      <div class="form-group">
+        <label for="api_endpoint">GupShup API Endpoint</label>
+        <input type="text" name="api_endpoint" class="form-control" value="[% api_endpoint %]">
+        <small class="form-text text-muted">API endpoint  provided by Endpoint</small>
+      </div>
+
+      <div class="form-group">
+        <label for="source">Source WhatsApp Number</label>
+        <input type="text" name="source" class="form-control" value="[% source %]">
+        <small class="form-text text-muted">Source Number</small>
+      </div>
+      
+<div class="form-group">
+        <label for="checkout_id">Checkout Template ID</label>
+        <input type="text" name="checkout_id" class="form-control" value="[% checkout_id %]">
+        <small class="form-text text-muted">Checkout Template ID</small>
+</div>
+
+<div class="form-group">
+        <label for="checkin_id">Checkin Template ID</label>
+        <input type="text" name="checkin_id" class="form-control" value="[% checkin_id %]">
+        <small class="form-text text-muted">Checkin Template ID</small>
+</div>
+
+<div class="form-group">
+        <label for="due_id">Due Template ID</label>
+        <input type="text" name="due_id" class="form-control" value="[% due_id %]">
+        <small class="form-text text-muted">Checkout Template ID</small>
+</div>
+
+
+
+	<button type="submit" class="btn btn-default">Submit</button>
+    </form>
+
+[% INCLUDE 'intranet-bottom.inc' %]
