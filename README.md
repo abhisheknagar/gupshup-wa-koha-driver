@@ -54,8 +54,7 @@ The following books have been issued to you as per your request in Library
 
 Thank you for visiting The Institute Library.
 ________________________________________________________________________________
-
-_
+![WhatsApp Screenshot](assets/wa.jpeg)
 
 
 
