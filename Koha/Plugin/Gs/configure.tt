@@ -52,7 +52,11 @@
         <small class="form-text text-muted">Checkout Template ID</small>
 </div>
 
-
+<div class="form-group">
+        <label for="ccode_id">Default Country Code</label>
+        <input type="text" name="ccode_id" class="form-control" value="[% ccode_id %]">
+        <small class="form-text text-muted">Default Country Code, use this config only if you donot have mobile numbers stored with Country Code for India enter 91</small>
+</div>
 
 	<button type="submit" class="btn btn-default">Submit</button>
     </form>

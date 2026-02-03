@@ -20,15 +20,15 @@ our $VERSION         = "1.0";
 our $MINIMUM_VERSION = "23.05";
 
 our $metadata = {
-    name            => 'GupShup WhatsApp Driver Plugin for Koha SMS',
+    name            => 'GupShup WhatsApp API Driver for Koha',
     author          => 'Abhishek Nagar',
     date_authored   => '2026-01-18',
-    date_updated    => "2026-02-02",
+    date_updated    => "2026-02-03",
     minimum_version => $MINIMUM_VERSION,
     maximum_version => undef,
     version         => $VERSION,
     description =>
-      'Plugin to forward Notices to an Endpoint which can process and send via WhatsApp Telegram etc',
+      'Plugin to forward Notices to Gupshup for sending via WhatsApp Business API',
 };
 
 =head3 new
@@ -69,6 +69,7 @@ sub configure {
             checkout_id => $self->retrieve_data('checkout_id'),
             due_id => $self->retrieve_data('due_id'),
             source => $self->retrieve_data('source'),
+            ccode_id => $self->retrieve_data('ccode_id'),
         );
 
         $self->output_html( $template->output() );
@@ -82,6 +83,7 @@ sub configure {
                 checkout_id => $cgi->param('checkout_id'),
                 due_id => $cgi->param('due_id'),
                 source => $cgi->param('source'),
+                ccode_id => $cgi->param('ccode_id'),
             }
         );
         $self->go_home();
@@ -150,6 +152,7 @@ sub before_send_messages {
     my $checkout_id =  $self->retrieve_data('checkout_id');
     my $checkin_id =  $self->retrieve_data('checkin_id');
     my $due_id =  $self->retrieve_data('due_id');
+    my $ccode_id =  $self->retrieve_data('ccode_id');
 
     my $messages = Koha::Notice::Messages->search(
         {
@@ -166,7 +169,7 @@ sub before_send_messages {
         my $patron = $patrons->{ $m->borrowernumber };
         unless ($patron) {
             warn
-              sprintf( "WA: Skipping message %s, no borrowernumber found!",
+              sprintf( "Gs: Skipping message %s, no borrowernumber found!",
                 $m->id );
             next;
         }
@@ -181,14 +184,14 @@ sub before_send_messages {
 			$tid = $due_id;
 		}
 
+    my $destination = $ccode_id.$patron->smsalertnumber;
 
-
-                  my $json = {
-    			'source'      => $source,
-    			'destination' => $patron->smsalertnumber || $patron->phone,
-    			'template'    => encode_json({
-        		'id'     => $tid,
-        			'params' => [$patron->firstname, $m->content]
+                my $json = {
+    			'source'        => $source,
+    			'destination'   => $destination,
+    			'template'      => encode_json({
+        		'id'            => $tid,
+        			'params'    => [$patron->firstname, $m->content]
     			}),
 		};
 
@@ -205,7 +208,7 @@ sub before_send_messages {
             $m->status('sent')->store();
         }
         else {
-            warn "WA response indicates failure: " . $res->status_line;
+            warn "Gs response indicates failure: " . $res->status_line;
             $m->status('failed')->store();
         }
     }
